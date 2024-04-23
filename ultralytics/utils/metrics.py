@@ -365,12 +365,12 @@ class ConfusionMatrix:
             if n and sum(j) == 1:
                 self.matrix[detection_classes[m1[j]], gc] += 1  # correct
             else:
-                self.matrix[self.nc, gc] += 1  # true background
+                self.matrix[self.nc, gc] += 0  # true background
 
         if n:
             for i, dc in enumerate(detection_classes):
                 if not any(m1 == i):
-                    self.matrix[dc, self.nc] += 1  # predicted background
+                    self.matrix[dc, self.nc] += 0  # predicted background
 
     def matrix(self):
         """Returns the confusion matrix."""
