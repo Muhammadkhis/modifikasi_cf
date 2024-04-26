@@ -300,6 +300,7 @@ class ConfusionMatrix:
         self.nc = nc  # number of classes
         self.conf = 0.25 if conf in {None, 0.001} else conf  # apply 0.25 if default val conf is passed
         self.iou_thres = iou_thres
+         self.check = 0
 
     def process_cls_preds(self, preds, targets):
         """
