@@ -380,7 +380,7 @@ class ConfusionMatrix:
         """Returns true positives and false positives."""
         tp = self.matrix.diagonal()  # true positives
         fp = self.matrix.sum(1) - tp  # false positives
-        # fn = self.matrix.sum(0) - tp  # false negatives (missed detections)
+        fn = self.matrix.sum(0) - tp  # false negatives (missed detections)
         return (tp[:-1], fp[:-1]) if self.task == "detect" else (tp, fp)  # remove background class if task=detect
 
     @TryExcept("WARNING ⚠️ ConfusionMatrix plot failure")
@@ -400,6 +400,12 @@ class ConfusionMatrix:
         array = self.matrix / ((self.matrix.sum(0).reshape(1, -1) + 1e-9) if normalize else 1)  # normalize columns
         array[array < 0.005] = np.nan  # don't annotate (would appear as 0.00)
 
+        # Menampilkan accuracy score sekali aja
+        if self.check == 0: 
+            acc = (self.matrix[0][0]+self.matrix[1][1]) / (self.matrix[0][0]+self.matrix[1][1]+self.matrix[1][0]+self.matrix[0][1])
+            print("Accuracy: ", acc)
+            self.check = 1
+            
         fig, ax = plt.subplots(1, 1, figsize=(12, 9), tight_layout=True)
         nc, nn = self.nc, len(names)  # number of classes, names
         seaborn.set_theme(font_scale=1.0 if nc < 50 else 0.8)  # for label size
